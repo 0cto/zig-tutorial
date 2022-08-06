@@ -10,23 +10,28 @@ ZIG_VERSION = 0.9.0
 DIRENV = _vendor/bin/direnv
 DIRENV_VERSION = 2.32.1
 
+.PHONY: run
+run: ## run main.zig
+	zig run ./main.zig
+
 .PHONY: deps
-deps:_vendor/bin/direnv _vendor/bin/zig env ## ready dependency
+deps:_vendor/bin/direnv _vendor/zig/zig env ## ready dependency
 
 .PHONY: env
 env: ## load env
 	$(DIRENV) allow
 
-_vendor/bin/zig: _vendor/bin/zig-$(ZIG_VERSION)
+_vendor/zig/zig: _vendor/zig/zig-$(ZIG_VERSION)
 	cd $(@D) && ln -sf $(<F) $(@F)
 	$@ version
 
-_vendor/bin/zig-%:
-	rm -f _vendor/bin/zig*
+_vendor/zig/zig-%:
+	rm -rf _vendor/zig/*
 	curl -f -SsL -o $@.tar.xz https://ziglang.org/download/$*/zig-$(ZIG_OS)-$(ZIG_ARCH)-$*.tar.xz
 	tar xf $@.tar.xz -C $(@D)
 	rm $@.tar.xz
 	mv $(@D)/zig-$(ZIG_OS)-$(ZIG_ARCH)-$*/zig $@
+	mv $(@D)/zig-$(ZIG_OS)-$(ZIG_ARCH)-$*/lib _vendor/zig/lib
 	rm -rf $(@D)/zig-$(ZIG_OS)-$(ZIG_ARCH)-$*/
 
 _vendor/bin/direnv: _vendor/bin/direnv-v$(DIRENV_VERSION)
