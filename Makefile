@@ -7,7 +7,6 @@ ZIG_OS = $(if $(filter $(shell uname),Darwin),macos,$(if $(filter $(shell uname)
 ZIG_ARCH = $(shell uname -m)
 
 DIRENV = _vendor/bin/direnv
-ZIG = _vendor/bin/zig
 
 .PHONY: deps
 deps:_vendor/bin/direnv _vendor/bin/zig env ## ready dependency
@@ -15,10 +14,6 @@ deps:_vendor/bin/direnv _vendor/bin/zig env ## ready dependency
 .PHONY: env
 env: ## load env
 	$(DIRENV) allow
-
-.PHONY: zig_version
-zig_version: ## load env
-	zig version
 
 _vendor/bin/zig: _vendor/bin/zig-0.9.0
 	cd $(@D) && ln -sf $(<F) $(@F)
