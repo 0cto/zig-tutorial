@@ -18,9 +18,9 @@ env: ## load env
 
 .PHONY: zig_version
 zig_version: ## load env
-	$(ZIG) version
+	zig version
 
-_vendor/bin/zig: _vendor/bin/zig-0.8.1
+_vendor/bin/zig: _vendor/bin/zig-0.9.0
 	cd $(@D) && ln -sf $(<F) $(@F)
 	$@ version
 
